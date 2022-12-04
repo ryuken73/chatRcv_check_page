@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import AnimatedNumber from './AnimatedNumber';
 import DigitalClock from './DigitalClock';
 import FirstMessage from './FirstMessage';
@@ -20,6 +20,17 @@ const MESSAGES = [
 ]
 const borderWidth = '5px';
 
+const blinkBackground = keyframes`
+  0% {
+    background: red;
+  }
+  100% {
+    background: darkred;
+  }
+`
+const animation = css`
+  ${blinkBackground} 1s linear infinite;
+`;
 const CommonStyle = styled.div`
   border-color: black;
   border-style: solid;
@@ -64,7 +75,7 @@ const LeftContainer = styled(CommonStyle)`
   height: 100%;
   font-size: calc(10px + 30vmin);
   border-width: 0 ${borderWidth} ${borderWidth} 0;
-  background: ${props => props.hasMessage && 'red'};
+  animation: ${props => props.hasMessage && animation};
 `
 const RightContainer = styled(CommonStyle)`
   flex: 3;
@@ -140,9 +151,10 @@ function App() {
           message={currentMessage} 
           removeMessage={removeMessage} 
         />
-        {messages.length > 1 && (
-          <More>{`More ${messages.length} messages left...`}</More>
-        )}
+        {messages.length > 1 ? 
+          <More>{`More ${messages.length} messages left...`}</More> :
+          messages.length === 1 && <More>Last Message.</More>
+        }
       </BottomContainer>
     </Container>
   );
