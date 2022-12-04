@@ -5,6 +5,7 @@ import AnimatedNumber from './AnimatedNumber';
 import DigitalClock from './DigitalClock';
 import FirstMessage from './FirstMessage';
 import usePrevious from './hooks/usePrevious';
+import useSocketClient from './hooks/useSocketIO';
 
 const MESSAGES = [
 {"chatId":30980366,"vodId":"V0000330602","eventTime":"2022-12-04 22:18:00","channelId":"RA01","text":"[M]가수 패티김이 부른 인연 이라는 노래 1999년 2월달에 나온노래였습니다.","userAgent":"Android 11,WiFi,5.2.2,SM-A505N","userId":"jgyoung2004","os":"Android 11","version":"5.2.2","device":"SM-A505N","network":"WiFi","vodName":"최백호의 낭만시대"},
@@ -103,10 +104,36 @@ const More = styled.div`
   margin-bottom: 5px;
 `
 function App() {
-  const [messages, setMessages] = React.useState(MESSAGES);
+  const [messages, setMessages] = React.useState([]);
   const [count, setCount] = React.useState(messages.length);
   const [isConnected, setIsConnected] = React.useState(false);
   const prevCount = usePrevious(count);
+  const { socket } = useSocketClient({
+    setSocketConnected: setIsConnected
+  });
+
+  React.useEffect(() => {
+      fetch('https://logsink.sbs.co.kr/goChat/warn')
+      .then(response => response.json())
+      .then(result => {
+        console.log(result);
+        setMessages(result);
+      });
+  }, [])
+
+  React.useEffect(() => {
+    console.log(socket)
+    if(socket === null) return;
+    console.log('attach socket listener..')
+    socket.on('newWarnMessage', message => {
+      console.log(message);
+      setMessages(messages => [...messages, message])
+    })
+    return () => {
+      console.log('remove socket listener..')
+      socket.removeAllListeners();
+    }
+  }, [socket])
 
   React.useEffect(() => {
     setCount(messages.length);

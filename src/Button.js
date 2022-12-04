@@ -6,7 +6,7 @@ const CustomButton = styled.button`
     border: 2px solid #1A1A1A;
     border-radius: 15px;
     box-sizing: border-box;
-    color: #FFFFFF;
+    color: ${props => props.color || '#FFFFFF'};
     cursor: pointer;
     display: inline-block;
     font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
@@ -41,9 +41,9 @@ const CustomButton = styled.button`
 `
 
 function Button(props) {
-    const {text, background, onClick, id} = props;
+    const {text, background, color, onClick, id} = props;
     return (
-        <CustomButton id={id} background={background} onClick={onClick}>{text}</CustomButton>
+        <CustomButton id={id} background={background} color={color} onClick={onClick}>{text}</CustomButton>
     )
 }
 

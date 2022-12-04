@@ -43,7 +43,8 @@ function FirstMessage(props) {
             <ButtonsContainer hide={hideButton}>
                 <Button 
                     text="Set Error" 
-                    background="maroon"
+                    background="red"
+                    color="yellow"
                     onClick={onClickButton}
                     id="error"
                 />
