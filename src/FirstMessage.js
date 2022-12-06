@@ -42,15 +42,16 @@ function FirstMessage(props) {
             </TextContainer>
             <ButtonsContainer hide={hideButton}>
                 <Button 
-                    text="Set Error" 
+                    text="Error" 
                     background="red"
                     color="yellow"
                     onClick={onClickButton}
                     id="error"
                 />
                 <Button 
-                    text="Set Normal" 
-                    background="black" 
+                    text="Normal" 
+                    background="white" 
+                    color="black"
                     onClick={onClickButton}
                     id="normal"
                 />

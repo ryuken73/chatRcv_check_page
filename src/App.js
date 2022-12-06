@@ -87,7 +87,7 @@ const RightContainer = styled(CommonStyle)`
   border-width: 0 ${borderWidth} ${borderWidth} 0;
 `
 const Status = styled(Header)`
-  color: ${props => !props.isConnected && 'red'};
+  color: ${props => !props.isConnected ? 'red':'white'};
   font-size: calc(5px + 5vmin);
   margin: 10px;
 `;
@@ -141,8 +141,26 @@ function App() {
 
   const removeMessage = React.useCallback((chatId, isError) => {
     console.log(chatId, isError)
-    setMessages(messages => {
-      return messages.filter(message => message.chatId !== chatId);
+    fetch('https://logsink.sbs.co.kr/goChat/classifyResult', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        chatId,
+        isError
+      })
+    })
+    .then(response => response.json())
+    .then(result => {
+      console.log(result);
+      setMessages(messages => {
+        return messages.filter(message => message.chatId !== chatId);
+    })
+    .catch(err => {
+      alert(err);
+    })
+
     })
   }, [])
 
@@ -168,7 +186,7 @@ function App() {
         </LeftContainer>
         <RightContainer>
           <Status isConnected={isConnected}>
-            {isConnected ? 'Connectioned':'Disconnected'}
+            {isConnected ? 'Connected':'Disconnected'}
           </Status>
           <DigitalClock></DigitalClock>
         </RightContainer>
