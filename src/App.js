@@ -119,13 +119,13 @@ function App() {
   });
 
   React.useEffect(() => {
-      // fetch('https://logsink.sbs.co.kr/goChat/warn')
-      // .then(response => response.json())
-      // .then(result => {
-      //   console.log(result);
-      //   setMessages(result);
-      // });
-      setMessages(MESSAGES);
+      fetch('https://logsink.sbs.co.kr/goChat/warn')
+      .then(response => response.json())
+      .then(result => {
+        console.log(result);
+        setMessages(result);
+      });
+      // setMessages(MESSAGES);
   }, [])
 
   React.useEffect(() => {
