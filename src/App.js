@@ -102,6 +102,12 @@ const BottomContainer = styled(CommonStyle)`
 const More = styled.div`
   font-size: calc(5px + 1vmin);
   margin-bottom: 5px;
+  opacity: 0.8;
+`
+const MsgInfo = styled.div`
+  font-size: calc(2px + 2vmin);
+  margin-bottom: 5px;
+  opacity: 0.8;
 `
 function App() {
   const [messages, setMessages] = React.useState([]);
@@ -113,12 +119,13 @@ function App() {
   });
 
   React.useEffect(() => {
-      fetch('https://logsink.sbs.co.kr/goChat/warn')
-      .then(response => response.json())
-      .then(result => {
-        console.log(result);
-        setMessages(result);
-      });
+      // fetch('https://logsink.sbs.co.kr/goChat/warn')
+      // .then(response => response.json())
+      // .then(result => {
+      //   console.log(result);
+      //   setMessages(result);
+      // });
+      setMessages(MESSAGES);
   }, [])
 
   React.useEffect(() => {
@@ -168,6 +175,8 @@ function App() {
     return messages[0] || {}; 
   }, [messages])
 
+  const {eventTime, vodName} = currentMessage;
+
   return (
     <Container>
       <HeaderContainer>
@@ -196,8 +205,9 @@ function App() {
           message={currentMessage} 
           removeMessage={removeMessage} 
         />
+        <MsgInfo>{eventTime} {vodName}</MsgInfo>
         {messages.length > 1 ? 
-          <More>{`More ${messages.length} messages left...`}</More> :
+          <More>{`${messages.length} messages more`}</More> :
           messages.length === 1 && <More>Last Message.</More>
         }
       </BottomContainer>
